@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reusable functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isFaculty() {
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'faculty';
+    }
+    function isStudent() {
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'student';
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAdmin() || (isFaculty() && resource.data.role == 'student' && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']));
+      allow delete: if isAdmin();
+    }
+
+    match /students/{studentId} {
+      allow read: if isAuthenticated() && (request.auth.uid == studentId || isFaculty() || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == studentId;
+      allow update: if isAdmin() || (isFaculty() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']));
+      allow delete: if isAdmin();
+    }
+
+    match /faculty/{facultyId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == facultyId;
+      allow update, delete: if isAdmin();
+    }
+
+    match /attendance/{docId} {
+      allow read: if isAuthenticated() && (
+        (isStudent() && resource.data.student_uid == request.auth.uid) ||
+        isFaculty() ||
+        isAdmin()
+      );
+      allow create: if isFaculty();
+      allow update, delete: if isAdmin();
+    }
+
+    match /face_embeddings/{studentId} {
+      allow read: if isFaculty() || isAdmin() || (isStudent() && request.auth.uid == studentId);
+      allow create: if isAuthenticated() && request.auth.uid == studentId;
+      allow update, delete: if isAdmin();
+    }
+
+    match /otp_requests/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Allow everything else for admin, lock for others
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

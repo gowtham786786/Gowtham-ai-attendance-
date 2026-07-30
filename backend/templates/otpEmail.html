@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0f1729;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .header h1 {
+      color: #4f8ef7;
+      margin: 0;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      color: #94a3b8;
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    .greeting {
+      color: #0f1729;
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    .message {
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+    .otp-container {
+      background-color: #f0f4ff;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .otp-code {
+      color: #4f8ef7;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: 12px;
+      margin: 0;
+      margin-left: 12px; /* compensate for letter spacing */
+    }
+    .expiry {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+    .warning {
+      color: #ef4444;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+      margin: 0;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .support {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      margin-top: 30px;
+    }
+    .footer {
+      text-align: center;
+      color: #475569;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Smart Attendance</h1>
+      <p>System</p>
+    </div>
+    
+    <div class="card">
+      <h2 class="greeting">Hello {{NAME}},</h2>
+      <p class="message">Your verification code for registration is:</p>
+      
+      <div class="otp-container">
+        <p class="otp-code">{{OTP}}</p>
+      </div>
+      
+      <p class="expiry">This code expires in {{EXPIRY}}</p>
+      
+      <p class="warning">
+        <strong>Security Warning:</strong> Do not share this OTP with anyone.<br>
+        Smart Attendance will never ask for your OTP.
+      </p>
+    </div>
+    
+    <div class="support">
+      Questions? Email support@smartattendance.edu
+    </div>
+    
+    <div class="footer">
+      &copy; 2026 Smart Attendance — KL University
+    </div>
+  </div>
+</body>
+</html>
